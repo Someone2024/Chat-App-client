@@ -25,7 +25,7 @@
                 console.log("token saved")
                 window.location.reload()
             }else {
-                 console.error('Login failed:', response.statusText);
+                 alert('Login failed: ' + response.statusText + " creating a new user... try again");
                 }
         }catch(e) {
             console.log(e)
