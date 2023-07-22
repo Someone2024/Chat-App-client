@@ -42,7 +42,7 @@
       
         <label for="password">Password:</label>
         <input bind:value={password} type="password" id="password" name="password" required>
-        {username}
+
         <button type="submit">
             Log in
         </button>
