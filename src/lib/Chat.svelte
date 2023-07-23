@@ -104,10 +104,13 @@
   }
 
   .local-form {
-    margin-bottom: 3.5%;
+    margin-bottom: 3.5% !important;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 11%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .app {
