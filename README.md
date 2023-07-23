@@ -16,7 +16,7 @@ The Chat App Client offers the following key features:
 
 To use the Chat App Client:
 
-1. Go to https://64bd35b6efc13a28648a5eab--exquisite-rolypoly-bebd52.netlify.app/
+1. Go to gilded-crisp-404896.netlify.app/
 
 2.  Log in, if you don't have an account wait for the app to create a new one for you.
 
