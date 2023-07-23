@@ -1,6 +1,6 @@
 export async function handleLogin(username, password) {
   try {
-    const response = await fetch("https://ai-chat-app-boyb.onrender.com/api/login", {
+    const response = await fetch("http://localhost:3000/api/login", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -14,8 +14,9 @@ export async function handleLogin(username, password) {
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data)
       localStorage.setItem("jwtToken", data.token);
-      console.log("token saved");
+      localStorage.setItem("avatar", data.avatar);
       window.location.reload();
     } else {
       alert(
