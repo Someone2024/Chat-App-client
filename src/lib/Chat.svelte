@@ -1,78 +1,109 @@
 <script>
   import ChatMessage from "./ChatMessage.svelte";
+  import SideBar from "./SideBar.svelte";
+  import {Button} from "flowbite-svelte"
   import { Messages } from "../messagesStore";
   import { onMount } from "svelte";
+  import { handleSend, handleChat, handleSignOut } from "./api/HandleChat";
 
   onMount(async () => {
     const messages = await handleChat();
     Messages.set(messages);
   });
 
-  function handleSignOut() {
-    localStorage.removeItem("jwtToken");
-    window.location.reload();
-  }
-
-  async function handleChat() {
-    try {
-      const response = await fetch("http://localhost:3000/api/messages", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: localStorage.getItem("jwtToken"),
-        },
-      });
-      if (response.ok) {
-        const messages = await response.json();
-        return messages;
-      } else {
-        console.log(response.statusText);
-        return response.statusText;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  async function handleSend() {
-    try {
-      const rensponse = await fetch(
-        "http://localhost:3000/api/messages/send-message",
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: localStorage.getItem("jwtToken"),
-          },
-          body: JSON.stringify({
-            messageContent,
-          }),
-        }
-      );
-      messageContent = "";
-      const messages = await rensponse.json();
-      console.log(messages);
-      Messages.update((currentMessages) => [...currentMessages, ...messages]);
-      return messages;
-    } catch (e) {
-      return e;
-    }
-  }
-
   let messageContent;
 </script>
 
-<h1>Chat</h1>
-<button on:click={handleSignOut}>Sing out</button>
-<div>
-  {#each $Messages as message}
-    <ChatMessage role={message.role} content={message.content} />
-  {/each}
-
-  <form on:submit|preventDefault={handleSend} action="">
-    <input bind:value={messageContent} type="text" placeholder="send message" />
-    <button type="submit">send</button>
-  </form>
+<div class="app">
+  <div class="side-bar">
+    <SideBar />
+  </div>
+  <div class="chat">
+    <div class="messages-container">
+      {#each $Messages as message}
+        <ChatMessage role={message.role} content={message.content} />
+      {/each}
+      <!-- display skeleton while loading messages -->
+      
+    </div>
+    <div class="form-container local-form">
+      <form on:submit|preventDefault={()=> {
+        handleSend(messageContent)
+        messageContent = ""
+        }}>
+        <input
+          class="input-message"
+          bind:value={messageContent}
+          type="text"
+          placeholder="Send a message"
+        />
+        <Button shadow={true} type="submit">send</Button>
+      </form>
+    </div>
+  </div>
 </div>
+
+<!-- <button on:click={handleSignOut}>Sing out</button> -->
+
+<style>
+  .chat {
+    height: 100vh;
+    width: 100%;
+    margin-left: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .input-message{
+    min-width: 750px;
+    border-radius: 4px;
+    padding: 10px;
+    outline: rgb(235, 79, 39);
+    border-color: #eb4f27;
+    box-shadow: 0px 0px 20px -7px rgba(235,79,39,1);
+  }
+
+  .input-message:focus {
+    outline: rgb(235, 79, 39);
+    border-color: #eb4f27;
+    box-shadow: 0px 0px 20px -7px rgba(235,79,39,1);
+  }
+
+  .messages-container{
+    overflow-y: scroll;
+    margin-bottom: -11%;
+  }
+
+  .messages-container::-webkit-scrollbar {
+    width: 0.5em; /* Set the width of the scrollbar */
+  }
+
+  .messages-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Set the color of the scrollbar thumb */
+    border-radius: 0.25em; /* Set the border radius of the scrollbar thumb */
+  }
+
+  .messages-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Set the color of the scrollbar thumb on hover */
+  }
+
+  .local-form, .messages-container{
+    width: 90%;
+  }
+
+  .local-form {
+    margin-bottom: 3.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .app {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+</style>
