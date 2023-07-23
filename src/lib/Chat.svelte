@@ -1,4 +1,5 @@
 <script>
+  //@ts-nocheck
   import ChatMessage from "./ChatMessage.svelte";
   import SideBar from "./SideBar.svelte";
   import { Button } from "flowbite-svelte";
@@ -37,7 +38,10 @@
     </div>
     <div class="form-container local-form">
       <form on:submit|preventDefault={() => {
-          handleSend(messageContent);
+          const sentMessage = handleSend(messageContent);
+          if(sentMessage === "401") {
+            alert("Unauthorized. Invalid token. log out and log in again")
+          }
           messageContent = "";
         }}
       >
