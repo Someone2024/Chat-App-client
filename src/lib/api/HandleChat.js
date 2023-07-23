@@ -40,7 +40,7 @@ export async function handleChat() {
         return messages;
       } else {
         console.log(response.statusText);
-        return response.statusText;
+        return response.status;
       }
     } catch (e) {
       console.log(e);
