@@ -34,7 +34,9 @@
             <Button color="primary" type="submit" class="w-full1">Log in</Button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Don’t have an account yet? 
-              <a class=" font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
+              <a on:click={()=>{
+                alert("Enter a any username and password they'll be created automatically")
+              }} class=" font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
             </p>
           </form>
         </div>
