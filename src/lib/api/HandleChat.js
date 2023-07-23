@@ -3,7 +3,7 @@ import { Messages } from "../../messagesStore";
 export async function handleSend(messageContent) {
     try {
       const rensponse = await fetch(
-        "https://ai-chat-app-boyb.onrender.com/api/messages/send-message",
+        "https://ai-chat-app-qpx4.onrender.com/api/messages/send-message",
         {
           method: "POST",
           mode: "cors",
@@ -27,7 +27,7 @@ export async function handleSend(messageContent) {
 
 export async function handleChat() {
     try {
-      const response = await fetch("https://ai-chat-app-boyb.onrender.com/api/messages/", {
+      const response = await fetch("https://ai-chat-app-qpx4.onrender.com/api/messages", {
         method: "GET",
         mode: "cors",
         headers: {
