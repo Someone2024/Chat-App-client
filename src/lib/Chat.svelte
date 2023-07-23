@@ -1,17 +1,27 @@
 <script>
   import ChatMessage from "./ChatMessage.svelte";
   import SideBar from "./SideBar.svelte";
-  import {Button} from "flowbite-svelte"
+  import { Button } from "flowbite-svelte";
   import { Messages } from "../messagesStore";
-  import { onMount } from "svelte";
+  import { onMount, beforeUpdate, afterUpdate } from "svelte";
   import { handleSend, handleChat, handleSignOut } from "./api/HandleChat";
 
   onMount(async () => {
     const messages = await handleChat();
     Messages.set(messages);
+    scrollToBottom()
   });
 
+  afterUpdate(()=> {
+    scrollToBottom()
+  })
+
+  const scrollToBottom = async () => {
+    div.scroll({ top: div.scrollHeight, behavior: 'smooth' });
+  }; 
+
   let messageContent;
+  let div;
 </script>
 
 <div class="app">
@@ -19,18 +29,18 @@
     <SideBar />
   </div>
   <div class="chat">
-    <div class="messages-container">
+    <div bind:this={div} class="messages-container">
       {#each $Messages as message}
         <ChatMessage role={message.role} content={message.content} />
       {/each}
       <!-- display skeleton while loading messages -->
-      
     </div>
     <div class="form-container local-form">
-      <form on:submit|preventDefault={()=> {
-        handleSend(messageContent)
-        messageContent = ""
-        }}>
+      <form on:submit|preventDefault={() => {
+          handleSend(messageContent);
+          messageContent = "";
+        }}
+      >
         <input
           class="input-message"
           bind:value={messageContent}
@@ -43,7 +53,7 @@
   </div>
 </div>
 
-<!-- <button on:click={handleSignOut}>Sing out</button> -->
+<!--<button on:click={handleSignOut}>Sing out</button> --> 
 
 <style>
   .chat {
@@ -55,22 +65,22 @@
     justify-content: space-between;
   }
 
-  .input-message{
+  .input-message {
     min-width: 750px;
     border-radius: 4px;
     padding: 10px;
     outline: rgb(235, 79, 39);
     border-color: #eb4f27;
-    box-shadow: 0px 0px 20px -7px rgba(235,79,39,1);
+    box-shadow: 0px 0px 20px -7px rgba(235, 79, 39, 1);
   }
 
   .input-message:focus {
     outline: rgb(235, 79, 39);
     border-color: #eb4f27;
-    box-shadow: 0px 0px 20px -7px rgba(235,79,39,1);
+    box-shadow: 0px 0px 20px -7px rgba(235, 79, 39, 1);
   }
 
-  .messages-container{
+  .messages-container {
     overflow-y: scroll;
     margin-bottom: -11%;
   }
@@ -88,7 +98,8 @@
     background-color: #555; /* Set the color of the scrollbar thumb on hover */
   }
 
-  .local-form, .messages-container{
+  .local-form,
+  .messages-container {
     width: 90%;
   }
 
