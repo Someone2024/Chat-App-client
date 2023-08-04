@@ -1,6 +1,6 @@
 export async function handleLogin(username, password) {
   try {
-    const response = await fetch("http://localhost:3000/api/login", {
+    const response = await fetch("https://ai-chat-app-qpx4.onrender.com/api/login", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -14,6 +14,7 @@ export async function handleLogin(username, password) {
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data)
       localStorage.setItem("jwtToken", data.token);
       localStorage.setItem("user_pfp}", data.user_pfp);
       console.log("token saved");
@@ -21,8 +22,7 @@ export async function handleLogin(username, password) {
     } else {
       alert(
         "Login failed: " +
-          response.statusText +
-          " creating a new user... try again"
+          response.statusText + " creating a new user... try again"
       );
     }
   } catch (e) {
