@@ -32,7 +32,7 @@
   <div class="chat">
     <div bind:this={div} class="messages-container">
       {#each $Messages as message}
-        <ChatMessage role={message.role} content={message.content} />
+        <ChatMessage userAvatar={localStorage.getItem("user_pfp}")} role={message.role} content={message.content} />
       {/each}
       <!-- display skeleton while loading messages -->
     </div>
