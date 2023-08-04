@@ -15,6 +15,7 @@ export async function handleLogin(username, password) {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("jwtToken", data.token);
+      localStorage.setItem("user_pfp}", data.user_pfp);
       console.log("token saved");
       window.location.reload();
     } else {
